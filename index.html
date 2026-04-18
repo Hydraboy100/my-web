@@ -6,61 +6,136 @@
 <title>Muhammad Ali — Developer</title>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
 
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{width:100%;height:100%;overflow:hidden;background:#000}
+*{margin:0;padding:0;box-sizing:border-box}
 
-  #canvas-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+html,body{
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+  background:#000;
+  font-family:'Space Mono', monospace;
+}
 
-  #app{position:fixed;inset:0;z-index:10;overflow:hidden;font-family:'Space Mono',monospace}
+/* CANVAS BACKGROUND (YOUR ORIGINAL STYLE KEPT) */
+#canvas-bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
 
-  nav{position:absolute;top:0;left:0;right:0;padding:24px 40px;display:flex;justify-content:space-between;align-items:center;z-index:100}
-  .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:#fff}
-  .logo span{color:#7DF9C2}
+/* CURSOR */
+#cursor,#cursor-ring{
+  position:fixed;
+  pointer-events:none;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  z-index:9999;
+}
+#cursor{
+  width:8px;height:8px;
+  background:#7DF9C2;
+}
+#cursor-ring{
+  width:36px;height:36px;
+  border:1px solid rgba(125,249,194,0.4);
+}
 
-  nav ul{list-style:none;display:flex;gap:32px}
-  nav ul li a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
-  nav ul li a.active,nav ul li a:hover{color:#7DF9C2}
+/* LAYOUT */
+.section{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:100px 10%;
+  position:relative;
+  z-index:2;
+  color:#fff;
+}
 
-  .section{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.5s;padding:80px 40px}
-  .section.visible{opacity:1;pointer-events:all}
+/* HERO */
+.hero{
+  flex-direction:column;
+  align-items:flex-start;
+}
 
-  #hero{flex-direction:column;align-items:flex-start;padding-left:10%}
+.hero h1{
+  font-family:'Syne';
+  font-size:clamp(48px,7vw,100px);
+  line-height:0.95;
+}
 
-  h1{font-family:'Syne';font-size:clamp(40px,7vw,88px);color:#fff;line-height:.95}
-  h1 .dim{color:rgba(255,255,255,.2)}
+.hero .dim{
+  color:rgba(255,255,255,0.25);
+}
 
-  .subtitle{margin-top:20px;color:rgba(255,255,255,.5);max-width:360px}
+.subtitle{
+  margin-top:20px;
+  max-width:420px;
+  color:rgba(255,255,255,0.6);
+}
 
-  .btn-primary{background:#7DF9C2;color:#000;padding:12px 24px;border:none;cursor:pointer}
-  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2);padding:12px 24px;cursor:pointer}
+/* BUTTONS */
+.btn{
+  margin-top:30px;
+  display:flex;
+  gap:12px;
+}
 
-  /* ABOUT */
-  #about{gap:60px}
-  .avatar-inner{width:140px;height:140px;border-radius:50%;background:#111;color:#7DF9C2;display:flex;align-items:center;justify-content:center;font-size:40px}
+button,a{
+  padding:12px 22px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:transparent;
+  color:#fff;
+  text-decoration:none;
+  cursor:pointer;
+}
 
-  /* SKILLS */
-  .skill-fill{height:100%;background:#7DF9C2;width:0;transition:1s}
+button.primary{
+  background:#7DF9C2;
+  color:#000;
+  border:none;
+}
 
-  /* CONTACT */
-  #contact h2{font-family:'Syne';font-size:60px;color:#fff}
-  #contact h2 span{color:#7DF9C2}
+/* ABOUT */
+.about{
+  gap:60px;
+}
 
-  .contact-link{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.2);padding:12px 20px;display:inline-flex;gap:10px}
+.avatar{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  background:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#7DF9C2;
+  font-size:40px;
+}
 
-  /* cursor */
-  #cursor,#cursor-ring{position:fixed;pointer-events:none;border-radius:50%;opacity:0}
-  #cursor{width:10px;height:10px;background:#7DF9C2;transform:translate(-50%,-50%)}
-  #cursor-ring{width:36px;height:36px;border:1px solid #7DF9C2;transform:translate(-50%,-50%)}
+/* CONTACT */
+.contact h2{
+  font-family:'Syne';
+  font-size:60px;
+}
 
-  /* MOBILE FIX */
-  @media(max-width:700px){
-    body,html{overflow-y:auto}
-    #app{position:relative}
-    .section{position:relative;min-height:100vh}
-    nav ul{display:none}
+.contact span{
+  color:#7DF9C2;
+}
+
+/* MOBILE FIX (IMPORTANT) */
+@media(max-width:700px){
+  body,html{
+    overflow-y:auto;
   }
+  .section{
+    position:relative;
+    padding:80px 6%;
+  }
+}
+
 </style>
 </head>
 
@@ -70,111 +145,143 @@
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<div id="app">
-
-<nav>
-  <div class="logo"><span>//</span> Muhammad Ali</div>
-  <ul>
-    <li><a onclick="goTo('hero')" class="active">Home</a></li>
-    <li><a onclick="goTo('about')">About</a></li>
-    <li><a onclick="goTo('skills')">Skills</a></li>
-    <li><a onclick="goTo('contact')">Contact</a></li>
-  </ul>
-</nav>
-
 <!-- HERO -->
-<div class="section visible" id="hero">
+<div class="section hero">
   <h1>Muhammad<br><span class="dim">Ali</span></h1>
-  <p class="subtitle">CS student in Naples, building and learning every day.</p>
-  <div style="margin-top:30px">
-    <button class="btn-primary" onclick="goTo('about')">About</button>
-    <button class="btn-ghost" onclick="goTo('contact')">Contact</button>
+
+  <p class="subtitle">
+    Computer Science student in Naples. Passionate about systems, logic, and building interactive digital experiences.
+  </p>
+
+  <div class="btn">
+    <button class="primary" onclick="document.getElementById('about').scrollIntoView()">About</button>
+    <button onclick="document.getElementById('contact').scrollIntoView()">Contact</button>
   </div>
 </div>
 
 <!-- ABOUT -->
-<div class="section" id="about">
-  <div class="avatar-inner">MA</div>
-  <div>
-    <h2 style="color:#fff">Student. Builder.</h2>
-    <p style="color:rgba(255,255,255,.5)">Computer Science student in Naples.</p>
-  </div>
-</div>
+<div class="section about" id="about">
+  <div class="avatar">MA</div>
 
-<!-- SKILLS -->
-<div class="section" id="skills">
-  <h2 style="color:#fff">Skills</h2>
-  <div style="width:300px;margin-top:20px">
-    <div>Python<div class="skill-fill" data-w="80"></div></div>
-    <div>Java<div class="skill-fill" data-w="70"></div></div>
+  <div>
+    <h2>Student. Builder. Thinker.</h2>
+    <p style="opacity:.6;max-width:420px;margin-top:10px;line-height:1.6">
+      I enjoy understanding how systems work under the surface and building small but meaningful projects that connect logic with creativity.
+    </p>
   </div>
 </div>
 
 <!-- CONTACT -->
-<div class="section" id="contact">
-  <h2>Say <span>Hello</span></h2>
+<div class="section contact" id="contact">
+  <div>
+    <h2>Say <span>Hello</span></h2>
 
-  <a class="contact-link"
-     href="mailto:alimuhammad10293847561@gmail.com">
-     Email Me
-  </a>
+    <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px">
 
-</div>
+      <a href="mailto:alimuhammad10293847561@gmail.com">
+        Email Me
+      </a>
 
+      <a href="https://wa.me/393447848436" target="_blank">
+        WhatsApp Me
+      </a>
+
+    </div>
+  </div>
 </div>
 
 <script>
-
-const sections=['hero','about','skills','contact'];
-let current='hero';
-
-const isMobile = window.innerWidth <= 700;
-
-/* navigation */
-window.goTo=function(id){
-  sections.forEach(s=>{
-    document.getElementById(s).classList.toggle('visible',s===id);
-  });
-  current=id;
-}
-
-/* SKILL ANIMATION */
-function animate(){
-  if(current==='skills'){
-    document.querySelectorAll('.skill-fill').forEach(el=>{
-      el.style.width=el.dataset.w+'%';
-    });
-  }
-}
-
-/* DESKTOP NAV ONLY */
-if(!isMobile){
-
-window.addEventListener('wheel',e=>{
-  let i=sections.indexOf(current);
-  if(e.deltaY>0 && i<sections.length-1) goTo(sections[i+1]);
-  if(e.deltaY<0 && i>0) goTo(sections[i-1]);
-},{passive:true});
-
-window.addEventListener('touchstart',e=>{
-  this.y=e.touches[0].clientY;
-});
-
-window.addEventListener('touchend',e=>{
-  let dy=this.y-e.changedTouches[0].clientY;
-  let i=sections.indexOf(current);
-  if(dy>50 && i<sections.length-1) goTo(sections[i+1]);
-  if(dy<-50 && i>0) goTo(sections[i-1]);
-});
-
-}
 
 /* cursor */
 window.addEventListener('mousemove',e=>{
   document.getElementById('cursor').style.left=e.clientX+'px';
   document.getElementById('cursor').style.top=e.clientY+'px';
-  document.getElementById('cursor').style.opacity=1;
+
+  document.getElementById('cursor-ring').style.left=e.clientX+'px';
+  document.getElementById('cursor-ring').style.top=e.clientY+'px';
 });
+
+/* YOUR ORIGINAL BACKGROUND SYSTEM (RESTORED) */
+const canvas=document.getElementById('canvas-bg');
+const ctx=canvas.getContext('2d');
+
+let w,h,stars=[],particles=[];
+
+function resize(){
+  w=canvas.width=innerWidth;
+  h=canvas.height=innerHeight;
+
+  stars=[];
+  particles=[];
+
+  for(let i=0;i<200;i++){
+    stars.push({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      r:Math.random()*1.2,
+      vx:(Math.random()-0.5)*0.1,
+      vy:(Math.random()-0.5)*0.1
+    });
+  }
+
+  for(let i=0;i<40;i++){
+    particles.push({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      r:1.5,
+      vx:(Math.random()-0.5)*0.3,
+      vy:(Math.random()-0.5)*0.3,
+      color:Math.random()>0.7?'#7DF9C2':'#fff'
+    });
+  }
+}
+
+function draw(){
+  ctx.fillStyle="#000";
+  ctx.fillRect(0,0,w,h);
+
+  let grd=ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,600);
+  grd.addColorStop(0,'rgba(125,249,194,0.05)');
+  grd.addColorStop(1,'transparent');
+  ctx.fillStyle=grd;
+  ctx.fillRect(0,0,w,h);
+
+  stars.forEach(s=>{
+    s.x+=s.vx;
+    s.y+=s.vy;
+
+    if(s.x<0)s.x=w;
+    if(s.x>w)s.x=0;
+    if(s.y<0)s.y=h;
+    if(s.y>h)s.y=0;
+
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,0.5)";
+    ctx.fill();
+  });
+
+  particles.forEach(p=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+
+    if(p.x<0)p.x=w;
+    if(p.x>w)p.x=0;
+    if(p.y<0)p.y=h;
+    if(p.y>h)p.y=0;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.color==='#7DF9C2'?'rgba(125,249,194,0.6)':'rgba(255,255,255,0.3)';
+    ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+
+resize();
+draw();
+window.addEventListener('resize',resize);
 
 </script>
 
